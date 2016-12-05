@@ -1,0 +1,26 @@
+{% if java_template_use_cow %}
+#  --------------------
+# ( Managed by Ansible )
+#  --------------------
+#   o            .    .     .
+#    o      .  . .     `  ,
+#     o    .; .  : .' :  :  : .
+#      o   i..`: i` i.i.,i  i .
+#       o   `,--.|i |i|ii|ii|i:
+#            UooU\.'@@@@@@`.||'
+#            \__/(@@@@@@@@@@)'
+#                 (@@@@@@@@)
+#                 `YY~~~~YY'
+#                  ||    ||
+{% else %}
+# {{ ansible_managed }}
+{% endif %}
+
+[general]
+vendor = "Silpion"
+vendor_url = "http://silpion.de"
+vendor_github = "https://github.com/silpion"
+role_version={{ java_role_version }}
+java_home={{ java_install_dir }}/oracle/{{ java_oracle_version_str_pkg }}
+version={{ java_oracle_version }}
+distribution={{ java_oracle_distribution }}

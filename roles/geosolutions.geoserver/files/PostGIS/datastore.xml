@@ -1,0 +1,38 @@
+<dataStore>
+  <id>DataStoreInfoImpl-4054adc2:152a37d9a2c:-7fff</id>
+  <name>PostGIS</name>
+  <description>A local Postgrees 9.1 PostGIS 2.1 DBMS</description>
+  <type>PostGIS</type>
+  <enabled>true</enabled>
+  <workspace>
+    <id>WorkspaceInfoImpl--570ae188:124761b8d78:-7ffb</id>
+  </workspace>
+  <connectionParameters>
+    <entry key="Connection timeout">20</entry>
+    <entry key="port">5432</entry>
+    <entry key="passwd">geoserver</entry>
+    <entry key="dbtype">postgis</entry>
+    <entry key="encode functions">false</entry>
+    <entry key="Evictor run periodicity">300</entry>
+    <entry key="namespace">http://www.geo-solutions.it</entry>
+    <entry key="schema">geoserver</entry>
+    <entry key="create database">false</entry>
+    <entry key="fetch size">1000</entry>
+    <entry key="preparedStatements">false</entry>
+    <entry key="min connections">1</entry>
+    <entry key="Evictor tests per run">3</entry>
+    <entry key="host">localhost</entry>
+    <entry key="validate connections">true</entry>
+    <entry key="max connections">10</entry>
+    <entry key="database">geoserver</entry>
+    <entry key="Support on the fly geometry simplification">true</entry>
+    <entry key="Max connection idle time">300</entry>
+    <entry key="Test while idle">true</entry>
+    <entry key="Loose bbox">true</entry>
+    <entry key="Expose primary keys">false</entry>
+    <entry key="Max open prepared statements">50</entry>
+    <entry key="Estimated extends">true</entry>
+    <entry key="user">geoserver</entry>
+  </connectionParameters>
+  <__default>false</__default>
+</dataStore>

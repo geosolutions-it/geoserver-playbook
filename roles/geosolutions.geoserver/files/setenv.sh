@@ -1,0 +1,2 @@
+GEOSERVER_DATA_DIR="-DGEOSERVER_DATA_DIR=/srv/geoserver/data"
+export JAVA_OPTS=$JAVA_OPTS" "$GEOSERVER_DATA_DIR" -server -Xms512m -Xmx1024m -XX:MaxPermSize=256m"

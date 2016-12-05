@@ -1,0 +1,3 @@
+[gs-cluster]
+# Add here a the list of server (one per line) which compose the gs-cluster
+#192.168.75.144

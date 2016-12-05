@@ -1,0 +1,5 @@
+geoserver_logs_dir: "/srv/geoserver/logs/"
+geoserver_audit_dir: "{{ geoserver_logs_dir }}audit/"
+max_heap_sixe_mb: "2048"
+min_heap_size_mb: "2048"
+max_permsize_mb: "512"

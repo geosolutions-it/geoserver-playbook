@@ -1,0 +1,34 @@
+---
+geoserver_name: geoserver
+geoserver_catalina_base: /srv/geoserver
+geoserver_webapp: /srv/geoserver/catalina/geoserver/webapps
+geoserver_bin: /srv/geoserver/catalina/geoserver/bin
+#war1_url: http://ares.boundlessgeo.com/geoserver/2.8.x/geoserver-2.8.x-latest-war.zip 
+tomcat_user: tomcat
+tomcat_group: tomcat
+extensions_baseurl: http://downloads.sourceforge.net/project/geoserver/GeoServer/2.10.0/extensions/
+community_modules_baseurl: http://ares.boundlessgeo.com/geoserver/2.10.x/community-latest/
+geoserver_extracted_dir: /tmp/geoserver/
+geoserver_ext_dwndir: /tmp/geoserver-ext/
+extensions_urls:
+    - "{{ extensions_baseurl }}geoserver-2.10.0-wps-plugin.zip"
+    - "{{ extensions_baseurl }}geoserver-2.10.0-css-plugin.zip"
+    - "{{ extensions_baseurl }}geoserver-2.10.0-control-flow-plugin.zip"
+    - "{{ extensions_baseurl }}geoserver-2.10.0-oracle-plugin.zip"
+    - "{{ extensions_baseurl }}geoserver-2.10.0-monitor-plugin.zip"
+    - "{{ extensions_baseurl }}geoserver-2.10.0-importer-plugin.zip"
+    - "{{ extensions_baseurl }}geoserver-2.10.0-pyramid-plugin.zip"
+    - "{{ community_modules_baseurl }}geoserver-2.10-SNAPSHOT-mbtiles-plugin.zip"
+#    - "{{ community_modules_baseurl }}geoserver-2.10-SNAPSHOT-jms-cluster-plugin.zip"
+    - "{{ community_modules_baseurl }}geoserver-2.10-SNAPSHOT-backup-restore-plugin.zip"
+extensions_archives:
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10.0-wps-plugin.zip"
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10.0-css-plugin.zip"
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10.0-control-flow-plugin.zip"
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10.0-oracle-plugin.zip"
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10.0-monitor-plugin.zip"
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10.0-importer-plugin.zip"
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10.0-pyramid-plugin.zip"
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10-SNAPSHOT-mbtiles-plugin.zip"
+#    - "{{ geoserver_ext_dwndir }}geoserver-2.10-SNAPSHOT-jms-cluster-plugin.zip"
+    - "{{ geoserver_ext_dwndir }}geoserver-2.10-SNAPSHOT-backup-restore-plugin.zip"

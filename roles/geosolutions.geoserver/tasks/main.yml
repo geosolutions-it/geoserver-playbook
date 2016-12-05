@@ -1,0 +1,129 @@
+---
+# *** Stop geoserver, it's preferred to use a task here instead a handler
+- name: stop geoserver
+  service: name={{ geoserver_name }} state=stopped
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** Copy the setenv.sh file *** NOT for REDHAT/CENTOS !!!
+#- copy: src=setenv.sh dest={{ geoserver_bin }} owner={{ tomcat_user }} group={{ tomcat_group }} mode=0644
+#  become: yes
+#  become_method: sudo
+#  become_user: tomcat
+
+# *** Download the geoserver zip release
+- name: download geoserver
+  get_url: url={{ war1_url }} dest=/tmp/download.zip mode=0440
+  when: (war1_url is defined) and (geoserver_webapp is defined)
+  register: geoserverDwFinished
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** Extract the downloaded archive
+- name: extract geoserver
+  unarchive: src=/tmp/download.zip dest=/tmp copy=no
+  when: geoserverDwFinished|success
+  register: geoserverExFinished
+  become: yes
+  become_method: sudo
+  become_user: root
+
+#------------------------------ EXTENSIONS ------------------------------------------------------
+#------------------------------------------------------------------------------------------------
+- file: path={{ geoserver_extracted_dir }} state=directory
+- file: path={{ geoserver_ext_dwndir }} state=directory
+
+# *** Extract the geoserver war
+- name: extract geoserver.war
+  unarchive: src=/tmp/geoserver.war dest={{ geoserver_extracted_dir }} copy=no
+  when: geoserverExFinished|success
+  register: geoserverExWarFinished
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** Download extensions
+- name: download extensions
+  get_url: url={{ item }} dest={{ geoserver_ext_dwndir }} mode=777
+  with_items: "{{ extensions_urls }}"
+  register: geoserverDwExtFinished
+
+# *** extract extensions
+- name: extract extensions
+  unarchive: src={{ item }} dest={{ geoserver_ext_dwndir }} remote_src=yes
+  with_items: "{{ extensions_archives }}"
+  when: geoserverDwExtFinished|success
+  register: geoserverExtExtracted
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** move jar extensions in geoserver extracted dir folder
+- name: move extensions into geoserver
+  shell: mv {{ geoserver_ext_dwndir }}*.jar {{ geoserver_extracted_dir }}WEB-INF/lib/
+  when: (geoserverExtExtracted|success) and (geoserverExWarFinished|success)
+  register: geoserverStructureReady
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** Create geoserver war with extensions jars
+- name: archive geoserver with extensions
+  archive: path={{ geoserver_extracted_dir }} dest=/tmp/geoserver_ext.war format=zip owner={{ tomcat_user }} group={{ tomcat_group }}
+  when: geoserverStructureReady|success
+  register: geoserverArchiveReady
+  become: yes
+  become_method: sudo
+  become_user: root
+#---------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
+
+# *** Deploy the war packg
+- name: deploy geoserver
+  command: mv /tmp/geoserver_ext.war {{ geoserver_webapp }}/geoserver.war 
+  when: (geoserver_webapp is defined) and (geoserverArchiveReady|success)
+  register: geoserverDpFinished
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** Externalize the geoserver datadir
+- name: externalizing datadir
+  shell: mkdir -p {{ geoserver_external_datadir }} && cp -rf {{ geoserver_extracted_dir }}data/* {{ geoserver_external_datadir }}
+  when: (geoserverExWarFinished|success) and (geoserver_external_datadir is defined)
+  register: geoserverDataDirExternalized
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** set the permission on the datadir
+- name: set permissions datadir
+  file: dest={{ geoserver_external_datadir }} mode=775 owner={{ tomcat_user }} group={{ tomcat_group }} recurse=yes
+  when: geoserverDataDirExternalized
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** Setting log directories
+- name: Set GeoServer logs dir
+  file: path={{ geoserver_logs_dir }} state=directory owner={{ tomcat_user }} group={{ tomcat_group }}
+
+- name: Set GeoServer auditing dir
+  file: path={{ geoserver_audit_dir }} state=directory owner={{ tomcat_user }} group={{ tomcat_group }}
+
+# *** set the permission on the war file
+- name: set permissions geoserver
+  file: dest={{ geoserver_webapp }}/geoserver.war mode=775 owner={{ tomcat_user }} group={{ tomcat_group }}
+  when: (geoserverDpFinished|success) and (geoserverDataDirExternalized|success)
+  become: yes
+  become_method: sudo
+  become_user: root
+
+# *** Restart geoserver
+- name: start geoserver
+  service: name={{ geoserver_name }} state=restarted
+  become: yes
+  become_method: sudo
+  become_user: root

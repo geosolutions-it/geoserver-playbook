@@ -1,0 +1,32 @@
+---
+- hosts: all
+  vars:
+    # JAVA ROLE
+    java_oracle_distribution: jdk
+    java_oracle_version: 8u66
+    # TOMCAT ROLE
+    tomcat_version: 8.0.29
+    util_init_system: systemd
+    tomcat_download_url: "http://168.202.4.246/apache-tomcat-8.0.29.tar.gz"
+    tomcat_instances:
+      - name: geoserver
+        service_name: geoserver
+        service_file: geoserver.service
+        path: /srv/geoserver
+        user: tomcat
+        port_ajp: 8009
+        port_connector: 8080
+        port_redirect: 8443
+        service_template: "/home/fds/work/code/ansible-provisioning/roles/templates-ovr/service_systemd.j2"
+    #GEOSERVER ROLE
+    #must be equal to the path in the tomcat_instances
+    geoserver_logs_dir: /work/geoserverlogs/
+    geoserver_catalina_base: /srv/geoserver
+    geoserver_external_datadir: /work/geoserverdata
+    #location of the geoserver zip distribution
+    war1_url: http://ares.boundlessgeo.com/geoserver/2.10.x/geoserver-2.10.x-latest-war.zip
+    #war1_url: "http://168.202.4.246/geoserver-2.10.x-latest-war.zip"
+  roles:
+    - { role: silpion.java }
+    - { role: silpion.tomcat }
+    - { role: geosolutions.geoserver }
